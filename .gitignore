@@ -1,0 +1,13 @@
+# 忽略所有 __pycache__ 文件夹及其中内容
+__pycache__/
+**/__pycache__/
+
+
+# 忽略所有模型文件夹，但保留Voice Activity Detection
+models/*
+!models/Voice Activity Detection/
+
+client-recorder/recordings/
+
+server-asr/voice_recognition/temp/
+server-asr/uploads/

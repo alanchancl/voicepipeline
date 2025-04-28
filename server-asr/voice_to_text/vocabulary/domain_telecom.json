@@ -1,0 +1,637 @@
+{
+  "办理": {
+    "term": "办理",
+    "pronunciation": "ban4 li3",
+    "definition": "处理或执行某事务的过程"
+  },
+  "客服": {
+    "term": "客服",
+    "pronunciation": "ke4 fu2",
+    "definition": "为客户提供服务和支持的专业人员或部门"
+  },
+  "小研": {
+    "term": "小研",
+    "pronunciation": "xiao3 yan2",
+    "definition": "智能语音助手或虚拟助理的名称"
+  },
+  "咨询": {
+    "term": "咨询",
+    "pronunciation": "zi1 xun2",
+    "definition": "向专业人员了解或询问相关信息"
+  },
+  "查询": {
+    "term": "查询",
+    "pronunciation": "cha2 xun2",
+    "definition": "查找并获取特定信息的过程"
+  },
+  "开通": {
+    "term": "开通",
+    "pronunciation": "kai1 tong1",
+    "definition": "启用或激活某项服务"
+  },
+  "取消": {
+    "term": "取消",
+    "pronunciation": "qu3 xiao1",
+    "definition": "终止或停用已开通的服务"
+  },
+  "申请": {
+    "term": "申请",
+    "pronunciation": "shen1 qing3",
+    "definition": "正式提出要求或请求某项服务"
+  },
+  "缴费": {
+    "term": "缴费",
+    "pronunciation": "jiao3 fei4",
+    "definition": "支付服务费用的行为"
+  },
+  "账单": {
+    "term": "账单",
+    "pronunciation": "zhang4 dan1",
+    "definition": "记录消费金额和明细的凭证"
+  },
+  "身份证": {
+    "term": "身份证",
+    "pronunciation": "shen1 fen4 zheng4",
+    "definition": "证明个人身份的官方证件"
+  },
+  "服务": {
+    "term": "服务",
+    "pronunciation": "fu2 wu4",
+    "definition": "为满足需求而提供的帮助或工作"
+  },
+  "问题": {
+    "term": "问题",
+    "pronunciation": "wen4 ti2",
+    "definition": "需要解决或回答的事项"
+  },
+  "帮助": {
+    "term": "帮助",
+    "pronunciation": "bang1 zhu4",
+    "definition": "提供支持或协助"
+  },
+  "了解": {
+    "term": "了解",
+    "pronunciation": "liao3 jie3",
+    "definition": "获取信息并理解"
+  },
+  "登记": {
+    "term": "登记",
+    "pronunciation": "deng1 ji4",
+    "definition": "记录个人信息的过程"
+  },
+  "预约": {
+    "term": "预约",
+    "pronunciation": "yu4 yue1",
+    "definition": "提前安排时间的行为"
+  },
+  "注销": {
+    "term": "注销",
+    "pronunciation": "zhu4 xiao1",
+    "definition": "终止账户或服务的使用权限"
+  },
+  "过户": {
+    "term": "过户",
+    "pronunciation": "guo4 hu4",
+    "definition": "将账户或服务的所有权转移给他人"
+  },
+  "补卡": {
+    "term": "补卡",
+    "pronunciation": "bu3 ka3",
+    "definition": "补办丢失或损坏的SIM卡"
+  },
+  "换卡": {
+    "term": "换卡",
+    "pronunciation": "huan4 ka3",
+    "definition": "更换现有SIM卡为新卡"
+  },
+  "挂失": {
+    "term": "挂失",
+    "pronunciation": "gua4 shi1",
+    "definition": "报告并暂时冻结丢失的账户或卡"
+  },
+  "解冻": {
+    "term": "解冻",
+    "pronunciation": "jie3 dong4",
+    "definition": "恢复被冻结账户的正常使用"
+  },
+  "签约": {
+    "term": "签约",
+    "pronunciation": "qian1 yue1",
+    "definition": "签订服务协议"
+  },
+  "解约": {
+    "term": "解约",
+    "pronunciation": "jie3 yue1",
+    "definition": "终止已签订的服务协议"
+  },
+  "投诉": {
+    "term": "投诉",
+    "pronunciation": "tou2 su4",
+    "definition": "对服务不满提出正式意见"
+  },
+  "反馈": {
+    "term": "反馈",
+    "pronunciation": "fan3 kui4",
+    "definition": "提供使用体验或建议"
+  },
+  "升级": {
+    "term": "升级",
+    "pronunciation": "sheng1 ji2",
+    "definition": "提高服务等级或规格"
+  },
+  "降级": {
+    "term": "降级",
+    "pronunciation": "jiang4 ji2",
+    "definition": "降低服务等级或规格"
+  },
+  "优惠": {
+    "term": "优惠",
+    "pronunciation": "you1 hui4",
+    "definition": "价格或服务上的特殊待遇"
+  },
+  "折扣": {
+    "term": "折扣",
+    "pronunciation": "zhe2 kou4",
+    "definition": "价格的减免比例"
+  },
+  "排队": {
+    "term": "排队",
+    "pronunciation": "pai2 dui4",
+    "definition": "按顺序等待服务的过程"
+  },
+  "号码": {
+    "term": "号码",
+    "pronunciation": "hao4 ma3",
+    "definition": "用于识别用户或设备的数字序列"
+  },
+  "营业时间": {
+    "term": "营业时间",
+    "pronunciation": "ying2 ye4 shi2 jian1",
+    "definition": "服务机构对外提供服务的时间段"
+  },
+  "证件": {
+    "term": "证件",
+    "pronunciation": "zheng4 jian4",
+    "definition": "证明身份或资格的文件"
+  },
+  "复印件": {
+    "term": "复印件",
+    "pronunciation": "fu4 yin4 jian4",
+    "definition": "原始文件的副本"
+  },
+  "签名": {
+    "term": "签名",
+    "pronunciation": "qian1 ming2",
+    "definition": "在文件上签署姓名以示确认"
+  },
+  "盖章": {
+    "term": "盖章",
+    "pronunciation": "gai4 zhang1",
+    "definition": "在文件上加盖印章以示正式"
+  },
+  "审核": {
+    "term": "审核",
+    "pronunciation": "shen3 he2",
+    "definition": "检查并确认信息或申请的正确性"
+  },
+  "受理": {
+    "term": "受理",
+    "pronunciation": "shou4 li3",
+    "definition": "接收并处理申请或请求"
+  },
+  "窗口": {
+    "term": "窗口",
+    "pronunciation": "chuang1 kou3",
+    "definition": "提供服务的柜台或接待处"
+  },
+  "柜台": {
+    "term": "柜台",
+    "pronunciation": "gui4 tai2",
+    "definition": "服务人员接待客户的台面"
+  },
+  "等候区": {
+    "term": "等候区",
+    "pronunciation": "deng3 hou4 qu1",
+    "definition": "等待服务的指定区域"
+  },
+  "自助机": {
+    "term": "自助机",
+    "pronunciation": "zi4 zhu4 ji1",
+    "definition": "无需人工协助即可办理业务的设备"
+  },
+  "回执": {
+    "term": "回执",
+    "pronunciation": "hui2 zhi2",
+    "definition": "证明已完成某项业务的凭证"
+  },
+  "凭证": {
+    "term": "凭证",
+    "pronunciation": "ping2 zheng4",
+    "definition": "证明交易或服务已完成的文件"
+  },
+  "资料": {
+    "term": "资料",
+    "pronunciation": "zi1 liao4",
+    "definition": "与业务相关的信息或文件"
+  },
+  "表格": {
+    "term": "表格",
+    "pronunciation": "biao3 ge2",
+    "definition": "需要填写的规范化文件"
+  },
+  "填写": {
+    "term": "填写",
+    "pronunciation": "tian2 xie3",
+    "definition": "在表格上提供所需信息"
+  },
+  "核对": {
+    "term": "核对",
+    "pronunciation": "he2 dui4",
+    "definition": "检查信息是否准确一致"
+  },
+  "确认": {
+    "term": "确认",
+    "pronunciation": "que4 ren4",
+    "definition": "证实或认可某项信息或操作"
+  },
+  "办结": {
+    "term": "办结",
+    "pronunciation": "ban4 jie2",
+    "definition": "完成业务办理的全部流程"
+  },
+  "延期": {
+    "term": "延期",
+    "pronunciation": "yan2 qi1",
+    "definition": "将期限推迟到更晚的时间"
+  },
+  "加急": {
+    "term": "加急",
+    "pronunciation": "jia1 ji2",
+    "definition": "优先或快速处理某项业务"
+  },
+  "代办": {
+    "term": "代办",
+    "pronunciation": "dai4 ban4",
+    "definition": "由他人代替办理业务"
+  },
+  "授权": {
+    "term": "授权",
+    "pronunciation": "shou4 quan2",
+    "definition": "给予他人代表自己行事的权力"
+  },
+  "委托书": {
+    "term": "委托书",
+    "pronunciation": "wei3 tuo1 shu1",
+    "definition": "授权他人代办事务的书面文件"
+  },
+  "业务": {
+    "term": "业务",
+    "pronunciation": "ye4 wu4",
+    "definition": "机构提供的各类服务内容"
+  },
+  "流程": {
+    "term": "流程",
+    "pronunciation": "liu2 cheng2",
+    "definition": "办理业务的步骤和顺序"
+  },
+  "指南": {
+    "term": "指南",
+    "pronunciation": "zhi3 nan2",
+    "definition": "提供业务办理方法的说明"
+  },
+  "公告": {
+    "term": "公告",
+    "pronunciation": "gong1 gao4",
+    "definition": "向公众发布的重要信息"
+  },
+  "通知": {
+    "term": "通知",
+    "pronunciation": "tong1 zhi1",
+    "definition": "告知特定对象的信息"
+  },
+  "回访": {
+    "term": "回访",
+    "pronunciation": "hui2 fang3",
+    "definition": "服务后的跟进联系"
+  },
+  "评价": {
+    "term": "评价",
+    "pronunciation": "ping2 jia4",
+    "definition": "对服务质量的评估"
+  },
+  "满意度": {
+    "term": "满意度",
+    "pronunciation": "man3 yi4 du4",
+    "definition": "对服务体验的满足程度"
+  },
+  "意见箱": {
+    "term": "意见箱",
+    "pronunciation": "yi4 jian4 xiang1",
+    "definition": "收集用户反馈的设施"
+  },
+  "首次办理": {
+    "term": "首次办理",
+    "pronunciation": "shou3 ci4 ban4 li3",
+    "definition": "第一次申请或处理某项业务"
+  },
+  "续期": {
+    "term": "续期",
+    "pronunciation": "xu4 qi1",
+    "definition": "延长服务或合约的有效期"
+  },
+  "变更": {
+    "term": "变更",
+    "pronunciation": "bian4 geng1",
+    "definition": "修改已有的服务内容或信息"
+  },
+  "暂停": {
+    "term": "暂停",
+    "pronunciation": "zan4 ting2",
+    "definition": "临时中断服务的使用"
+  },
+  "恢复": {
+    "term": "恢复",
+    "pronunciation": "hui1 fu4",
+    "definition": "重新启用暂停的服务"
+  },
+  "套餐": {
+    "term": "套餐",
+    "pronunciation": "tao4 can1",
+    "definition": "电信运营商提供的包含通话、短信、流量等在内的服务组合"
+  },
+  "量子": {
+    "term": "量子",
+    "pronunciation": "liang4 zi3",
+    "definition": "在电信领域中，指量子通信技术，一种利用量子力学原理实现的高安全性通信方式"
+  },
+  "长途": {
+    "term": "长途",
+    "pronunciation": "chang2 tu2", 
+    "definition": "跨地区的电话通话服务"
+  },
+  "话费": {
+    "term": "话费",
+    "pronunciation": "hua4 fei4",
+    "definition": "电话通话和短信等通信服务所需支付的费用"
+  },
+  "电信": {
+    "term": "电信",
+    "pronunciation": "dian4 xin4",
+    "definition": "提供通信服务的运营商,是中国三大电信运营商之一"
+  },
+  "流量包": {
+    "term": "流量包",
+    "pronunciation": "liu2 liang4 bao1",
+    "definition": "电信运营商提供的移动数据流量服务包"
+  },
+  "资费": {
+    "term": "资费",
+    "pronunciation": "zi1 fei4",
+    "definition": "电信运营商对各项服务收取的费用标准"
+  },
+  "合约机": {
+    "term": "合约机",
+    "pronunciation": "he2 yue1 ji1",
+    "definition": "用户与运营商签订一定期限合约，购买的价格优惠手机"
+  },
+  "携号转网": {
+    "term": "携号转网",
+    "pronunciation": "xie2 hao4 zhuan3 wang3",
+    "definition": "用户保留原有手机号码，变更所属运营商的服务"
+  },
+  "实名认证": {
+    "term": "实名认证",
+    "pronunciation": "shi2 ming2 ren4 zheng4",
+    "definition": "用户提供真实身份信息进行的身份验证"
+  },
+  "话费查询": {
+    "term": "话费查询",
+    "pronunciation": "hua4 fei4 cha2 xun2",
+    "definition": "查询通话费用的余额和使用情况"
+  },
+  "充值": {
+    "term": "充值",
+    "pronunciation": "chong1 zhi2",
+    "definition": "向手机账户存入话费的行为"
+  },
+  "宽带": {
+    "term": "宽带",
+    "pronunciation": "kuan1 dai4",
+    "definition": "高速率的互联网接入服务"
+  },
+  "光纤": {
+    "term": "光纤",
+    "pronunciation": "guang1 xian1",
+    "definition": "利用光导纤维传输信号的高速网络连接方式"
+  },
+  "提速": {
+    "term": "提速",
+    "pronunciation": "ti2 su4",
+    "definition": "提高网络连接或数据传输速度"
+  },
+  "降费": {
+    "term": "降费",
+    "pronunciation": "jiang4 fei4",
+    "definition": "降低服务收费标准"
+  },
+  "短信": {
+    "term": "短信",
+    "pronunciation": "duan3 xin4",
+    "definition": "通过移动通信网络发送的文字信息"
+  },
+  "彩信": {
+    "term": "彩信",
+    "pronunciation": "cai3 xin4",
+    "definition": "通过移动通信网络发送的包含图片、音频等多媒体内容的信息"
+  },
+  "国内长途": {
+    "term": "国内长途",
+    "pronunciation": "guo2 nei4 chang2 tu2",
+    "definition": "国内不同区域之间的远距离电话通话"
+  },
+  "国际长途": {
+    "term": "国际长途",
+    "pronunciation": "guo2 ji4 chang2 tu2",
+    "definition": "与国外进行的远距离电话通话"
+  },
+  "来电显示": {
+    "term": "来电显示",
+    "pronunciation": "lai2 dian4 xian3 shi4",
+    "definition": "在电话接收端显示主叫方电话号码的功能"
+  },
+  "呼叫转移": {
+    "term": "呼叫转移",
+    "pronunciation": "hu1 jiao4 zhuan3 yi2",
+    "definition": "将来电自动转接到其他电话号码的功能"
+  },
+  "业务办理": {
+    "term": "业务办理",
+    "pronunciation": "ye4 wu4 ban4 li3",
+    "definition": "用户申请开通、变更或取消电信服务的过程"
+  },
+  "投诉处理": {
+    "term": "投诉处理",
+    "pronunciation": "tou2 su4 chu3 li3",
+    "definition": "受理并解决用户投诉的流程"
+  },
+  "营业厅": {
+    "term": "营业厅",
+    "pronunciation": "ying2 ye4 ting1",
+    "definition": "电信运营商提供面对面服务的实体网点"
+  },
+  "客服热线": {
+    "term": "客服热线",
+    "pronunciation": "ke4 fu2 re4 xian4",
+    "definition": "提供电话咨询和服务的专线电话"
+  },
+  "在线客服": {
+    "term": "在线客服",
+    "pronunciation": "zai4 xian4 ke4 fu2",
+    "definition": "通过网络提供实时咨询和服务的渠道"
+  },
+  "服务质量": {
+    "term": "服务质量",
+    "pronunciation": "fu2 wu4 zhi4 liang4",
+    "definition": "电信服务的水平和用户满意度"
+  },
+  "信号覆盖": {
+    "term": "信号覆盖",
+    "pronunciation": "xin4 hao4 fu4 gai4",
+    "definition": "移动通信网络信号能够到达的地理范围"
+  },
+  "网络稳定性": {
+    "term": "网络稳定性",
+    "pronunciation": "wang3 luo4 wen3 ding4 xing4",
+    "definition": "网络连接和服务的可靠程度"
+  },
+  "4G网络": {
+    "term": "4G网络",
+    "pronunciation": "4G wang3 luo4",
+    "definition": "第四代移动通信技术标准的网络"
+  },
+  "5G网络": {
+    "term": "5G网络",
+    "pronunciation": "5G wang3 luo4",
+    "definition": "第五代移动通信技术标准的网络"
+  },
+  "智能家居": {
+    "term": "智能家居",
+    "pronunciation": "zhi4 neng2 jia1 ju1",
+    "definition": "通过网络连接和智能控制的家庭设备系统"
+  },
+  "物联网": {
+    "term": "物联网",
+    "pronunciation": "wu4 lian2 wang3",
+    "definition": "通过网络互联的各种物理设备的系统"
+  },
+  "云服务": {
+    "term": "云服务",
+    "pronunciation": "yun2 fu2 wu4",
+    "definition": "通过网络提供的计算、存储等信息技术服务"
+  },
+  "大数据": {
+    "term": "大数据",
+    "pronunciation": "da4 shu4 ju4",
+    "definition": "规模庞大、复杂的数据集合及其处理技术"
+  },
+  "增值服务": {
+    "term": "增值服务",
+    "pronunciation": "zeng1 zhi2 fu2 wu4",
+    "definition": "基础通信服务之外的附加服务"
+  },
+  "积分兑换": {
+    "term": "积分兑换",
+    "pronunciation": "ji1 fen1 dui4 huan4",
+    "definition": "用户使用消费积累的积分换取奖励或优惠的活动"
+  },
+  "优惠活动": {
+    "term": "优惠活动",
+    "pronunciation": "you1 hui4 huo2 dong4",
+    "definition": "电信运营商推出的各种促销和优惠措施"
+  },
+  "首充": {
+    "term": "首充",
+    "pronunciation": "shou3 chong1",
+    "definition": "新用户首次充值话费"
+  },
+  "话费余额": {
+    "term": "话费余额",
+    "pronunciation": "hua4 fei4 yu2 e2",
+    "definition": "用户账户中可用于支付通信服务的金额"
+  },
+  "流量剩余": {
+    "term": "流量剩余",
+    "pronunciation": "liu2 liang4 sheng4 yu2",
+    "definition": "用户当前计费周期内尚未使用的数据流量"
+  },
+  "漫游": {
+    "term": "漫游",
+    "pronunciation": "man4 you2",
+    "definition": "用户在非归属地区使用移动通信服务"
+  },
+  "靓号": {
+    "term": "靓号", 
+    "pronunciation": "liang4 hao4",
+    "definition": "指号码数字组合特别、容易记忆的手机号码，如连号、重复号等"
+  },
+  "靓号套餐": {
+    "term": "靓号套餐",
+    "pronunciation": "liang4 hao4 tao4 can1",
+    "definition": "包含靓号的手机套餐"
+  },
+  "靓号预存": {
+    "term": "靓号预存",
+    "pronunciation": "liang4 hao4 yu4 cun2",
+    "definition": "办理靓号时需要预存的话费金额"
+  },
+  "靓号保底": {
+    "term": "靓号保底",
+    "pronunciation": "liang4 hao4 bao3 di3",
+    "definition": "靓号每月最低消费要求"
+  },
+  "号码归属地": {
+    "term": "号码归属地",
+    "pronunciation": "hao4 ma3 gui1 shu3 di4",
+    "definition": "电话号码所属的地理区域"
+  },
+  "用户忠诚度": {
+    "term": "用户忠诚度",
+    "pronunciation": "yong4 hu4 zhong1 cheng2 du4",
+    "definition": "用户对特定电信运营商的长期偏好和持续使用意愿"
+  },
+  "满意度调查": {
+    "term": "满意度调查",
+    "pronunciation": "man3 yi4 du4 diao4 cha2",
+    "definition": "了解用户对服务体验评价的问卷或访谈"
+  },
+  "工单": {
+    "term": "工单",
+    "pronunciation": "gong1 dan1",
+    "definition": "客服系统中记录用户问题和解决过程的服务记录"
+  },
+  "故障申报": {
+    "term": "故障申报",
+    "pronunciation": "gu4 zhang4 shen1 bao4",
+    "definition": "用户报告网络或服务异常的流程"
+  },
+  "网络故障": {
+    "term": "网络故障",
+    "pronunciation": "wang3 luo4 gu4 zhang4",
+    "definition": "通信网络出现的技术性问题或中断"
+  },
+  "解除捆绑": {
+    "term": "解除捆绑",
+    "pronunciation": "jie3 chu2 kun3 bang3",
+    "definition": "取消多项服务的组合销售关联"
+  },
+  "量子卡": {
+    "term": "量子卡",
+    "pronunciation": "liang4 zi3 ka3",
+    "definition": "基于量子通信技术的安全通信卡"
+  },
+  "密话": {
+    "term": "密话",
+    "pronunciation": "mi4 hua4",
+    "definition": "加密通话服务，提供更高安全性的通信方式"
+  }
+} 

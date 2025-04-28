@@ -1,0 +1,21 @@
+{
+  "server": {
+    "ip": "172.27.33.64",
+    "port": 7860
+  },
+  "forward": {
+    "ip": "localhost",
+    "port": 20252,
+    "path": "/api/v1/ai-terminal"
+  },
+  "vad": {
+    "threshold": 0.45,
+    "silence_duration": 1.2,
+    "min_speech_duration": 0.3,
+    "speech_pad_ms": 300
+  },
+  "audio": {
+    "save_recordings": true,
+    "input_device_index": 1
+  }
+}

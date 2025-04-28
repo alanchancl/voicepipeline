@@ -1,0 +1,17 @@
+{
+    "你好": {
+      "term": "你好",
+      "pronunciation": "ni3 hao3",
+      "definition": "用于问候他人的常用语"
+    },
+    "帮您": {
+      "term": "帮您",
+      "pronunciation": "bang1 nin2",
+      "definition": "表示愿意为对方提供帮助的礼貌用语，使用敬称"
+    },
+    "帮你": {
+      "term": "帮你",
+      "pronunciation": "bang1 ni3",
+      "definition": "表示愿意为对方提供帮助的常用语"
+    }
+}

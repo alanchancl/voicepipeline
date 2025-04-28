@@ -1,0 +1,47 @@
+{
+  "recordings": [
+    {
+      "timestamp": "2025-04-27T17:29:18.526566",
+      "file_path": "e:\\CodeRepository\\voicepipeline\\client-recorder\\recordings\\recording_20250427_172918.wav",
+      "response": {
+        "has_transcription": false,
+        "status": "success",
+        "transcription": ""
+      }
+    },
+    {
+      "timestamp": "2025-04-27T17:29:21.243055",
+      "file_path": "e:\\CodeRepository\\voicepipeline\\client-recorder\\recordings\\recording_20250427_172920.wav",
+      "response": {
+        "audio_path": "/data/chenl/voicepipeline/server-asr/uploads/20250427172920_2025042717292096.wav",
+        "domain": "telecom",
+        "has_transcription": true,
+        "processing_time": 0.10837149620056152,
+        "status": "success",
+        "transcription": "你好你好",
+        "voiceprint": {
+          "employee_id": "chenlun",
+          "similarity": 0.7862035036087036,
+          "verified": true
+        }
+      }
+    },
+    {
+      "timestamp": "2025-04-27T17:29:26.016865",
+      "file_path": "e:\\CodeRepository\\voicepipeline\\client-recorder\\recordings\\recording_20250427_172925.wav",
+      "response": {
+        "audio_path": "/data/chenl/voicepipeline/server-asr/uploads/20250427172925_2025042717292572.wav",
+        "domain": "telecom",
+        "has_transcription": true,
+        "processing_time": 0.10079598426818848,
+        "status": "success",
+        "transcription": "请帮我办理量子卡",
+        "voiceprint": {
+          "employee_id": "chenlun",
+          "similarity": 0.9262536764144897,
+          "verified": true
+        }
+      }
+    }
+  ]
+}

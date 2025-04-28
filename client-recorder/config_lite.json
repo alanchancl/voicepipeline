@@ -1,0 +1,25 @@
+{
+  "server": {
+    "ip": "172.27.33.64",
+    "port": 7860
+  },
+  "forward": {
+    "ip": "172.27.33.64",
+    "port": 20252,
+    "path": "/api/v1/ai-terminal"
+  },
+  "vad": {
+    "energy_threshold": 150000,
+    "silence_duration": 1.2,
+    "min_speech_duration": 0.3,
+    "auto_adjust_threshold": false
+  },
+  "audio": {
+    "save_recordings": true,
+    "input_device_index": 1
+  },
+  "debug": {
+    "enabled": true,
+    "log_energy": true
+  }
+}
