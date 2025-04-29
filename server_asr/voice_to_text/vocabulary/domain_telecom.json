@@ -4,6 +4,16 @@
     "pronunciation": "ban4 li3",
     "definition": "处理或执行某事务的过程"
   },
+  "电信": {
+    "term": "电信",
+    "pronunciation": "dian4 xin4",
+    "definition": "提供电信服务的公司或机构"
+  },
+  "中国电信": {
+    "term": "中国电信",
+    "pronunciation": "zhong1 guo2 dian4 xin4",
+    "definition": "提供电信服务的公司或机构"
+  },
   "客服": {
     "term": "客服",
     "pronunciation": "ke4 fu2",
@@ -373,11 +383,6 @@
     "term": "话费",
     "pronunciation": "hua4 fei4",
     "definition": "电话通话和短信等通信服务所需支付的费用"
-  },
-  "电信": {
-    "term": "电信",
-    "pronunciation": "dian4 xin4",
-    "definition": "提供通信服务的运营商,是中国三大电信运营商之一"
   },
   "流量包": {
     "term": "流量包",

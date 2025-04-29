@@ -1,0 +1,8 @@
+2025-04-29 11:36:32,727 - INFO - 已加载131个专业术语到分词系统
+2025-04-29 11:36:37,525 - INFO - 从集中式模型目录加载: e:\CodeRepository\voicepipeline\models\Voiceprint Recognition\wav2vec2-large-xlsr-53-chinese-zh-cn
+2025-04-29 11:36:37,751 - INFO - 成功从集中式模型目录加载模型
+2025-04-29 11:36:38,399 - INFO - 已将模型加载到GPU: 0 (NVIDIA GeForce GTX 1060 6GB)
+2025-04-29 11:37:35,857 - INFO - 语音识别结果 (领域: telecom):
+2025-04-29 11:38:31,916 - INFO - 语音识别结果 (领域: telecom):
+2025-04-29 11:48:09,329 - INFO - 已加载131个专业术语到分词系统
+2025-04-29 11:48:25,878 - INFO - 已加载131个专业术语到分词系统

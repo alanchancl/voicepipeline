@@ -4,8 +4,8 @@
 import os
 import json
 import logging
-import jieba
-from pypinyin import lazy_pinyin
+import jieba  # noqa: F401
+from pypinyin import lazy_pinyin  # noqa: F401
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -285,7 +285,7 @@ def _apply_vocabulary_with_pinyin(text, pinyin, term_pinyin_map, term_by_length)
             
             # 寻找最佳匹配
             best_match = None
-            best_similarity = 0.8  # 设置较高的阈值确保精确匹配
+            best_similarity = 0.7  # 设置较高的阈值确保精确匹配
             
             # 遍历词库中指定长度的所有术语
             for term, term_pinyin in desired_terms:
@@ -297,23 +297,49 @@ def _apply_vocabulary_with_pinyin(text, pinyin, term_pinyin_map, term_by_length)
                 
                 # 计算拼音相似度
                 try:
-                    # 去除声调比较
-                    term_pinyin_no_tone = ''.join([c for c in term_pinyin if not c.isdigit()])
-                    segment_no_tone = ''.join([c for c in segment_tone_pinyin if not c.isdigit()])
+                    # 提取声调
+                    segment_tone = None
+                    term_tone = None
                     
-                    if term_pinyin_no_tone == segment_no_tone:
-                        # 无声调拼音匹配，视为高相似度
-                        similarity = 0.95
+                    for char in reversed(segment_tone_pinyin):
+                        if char.isdigit():
+                            segment_tone = int(char)
+                            break
+                    
+                    for char in reversed(term_pinyin):
+                        if char.isdigit():
+                            term_tone = int(char)
+                            break
+                    
+                    # 去除声调
+                    segment_no_tone = ''.join([c for c in segment_tone_pinyin if not c.isdigit()])
+                    term_no_tone = ''.join([c for c in term_pinyin if not c.isdigit()])
+                    
+                    # 基础相似度计算
+                    if segment_no_tone == term_no_tone:
+                        # 无声调拼音相同，基础相似度为0.9
+                        similarity = 0.9
+                        # 声调也相同，完全匹配
+                        if segment_tone == term_tone:
+                            similarity = 1.0
                     else:
-                        # 计算编辑距离或字符匹配率
-                        # 这里使用简单的字符匹配率
+                        # 计算字符匹配率
                         matches = 0
-                        total = max(len(segment_tone_pinyin), len(term_pinyin))
-                        for i in range(min(len(segment_tone_pinyin), len(term_pinyin))):
-                            if segment_tone_pinyin[i] == term_pinyin[i]:
+                        total = max(len(segment_no_tone), len(term_no_tone))
+                        for i in range(min(len(segment_no_tone), len(term_no_tone))):
+                            if segment_no_tone[i] == term_no_tone[i]:
                                 matches += 1
                         
-                        similarity = matches / total
+                        # 基础相似度
+                        similarity = matches / total * 0.8  # 最多80%相似度
+                        
+                        # 声调相同加分
+                        if segment_tone == term_tone:
+                            similarity += 0.1  # 声调相同加10%相似度
+                    
+                    # 单字词特殊处理
+                    if desired_len == 1 and segment_no_tone == term_no_tone and segment_tone != term_tone:
+                        similarity *= 0.9  # 单字词声调不同，降低10%相似度
                 except Exception as e:
                     print(f"计算相似度出错: {e}")
                     similarity = 0.0

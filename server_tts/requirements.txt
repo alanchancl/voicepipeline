@@ -1,0 +1,8 @@
+torch>=2.0.0
+torchaudio>=2.0.0
+fastapi>=0.95.0
+uvicorn>=0.22.0
+pydantic>=2.0.0
+python-multipart>=0.0.6
+uuid>=1.30
+# 注意：ChatTTS需要单独安装或已被项目引用 

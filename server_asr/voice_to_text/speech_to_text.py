@@ -11,13 +11,8 @@ import argparse
 import json
 import jieba
 import sys
-
-# 导入自定义词库模块
-try:
-    from . import custom_vocabulary
-except ImportError:
-    import custom_vocabulary
-
+import importlib
+from custom_vocabulary import get_vocabulary_manager
 # 模型路径和配置
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 SERVER_DIR = os.path.dirname(MODULE_DIR)
@@ -44,15 +39,17 @@ _current_gpu_id = None  # 记录当前使用的GPU ID
 # 初始化词库和jieba分词
 def init_vocabulary():
     """初始化词库并加载到jieba分词中"""
-    vocab_manager = custom_vocabulary.get_vocabulary_manager()
+
+    # 获取词库管理器
+    vocab_manager = get_vocabulary_manager()
     # 获取所有术语并添加到jieba分词词典
     terms = vocab_manager.get_all_terms()
     for term in terms:
         jieba.add_word(term)
     print(f"已加载{len(terms)}个专业术语到分词系统")
 
-# 在模块导入时初始化词库
-init_vocabulary()
+# 在模块导入时初始化词库，但确保在所有函数定义完成后再调用
+# 将init_vocabulary()的调用移到模块最后
 
 # 加载语音识别模型
 def load_asr_model(gpu_id=None):
@@ -110,7 +107,7 @@ def load_asr_model(gpu_id=None):
             processor.save_pretrained(LOCAL_MODEL_DIR)
             model.save_pretrained(LOCAL_MODEL_DIR)
             print("语音识别模型已保存到本地")
-            
+
             # 尝试同时保存到集中式目录
             try:
                 os.makedirs(os.path.dirname(CENTRALIZED_MODEL_DIR), exist_ok=True)
@@ -140,6 +137,85 @@ def load_asr_model(gpu_id=None):
     _current_gpu_id = gpu_id
 
     return model, processor
+
+def calculate_pinyin_similarity(pinyin1, pinyin2):
+    """
+    计算两个拼音之间的相似度，考虑声母、韵母和声调
+    
+    Args:
+        pinyin1: 第一个拼音字符串
+        pinyin2: 第二个拼音字符串
+        
+    Returns:
+        float: 相似度分数 (0-1)
+    """
+    # 如果完全相同，直接返回1.0
+    if pinyin1 == pinyin2:
+        return 1.0
+
+    # 拼音长度差异过大，可能是完全不同的词
+    len_diff = abs(len(pinyin1) - len(pinyin2))
+    if len_diff > 3:
+        return 0.0
+
+    # 将拼音分解为声母、韵母和声调
+    def parse_pinyin(pinyin):
+        # 简单的声母列表
+        initials = ['b', 'p', 'm', 'f', 'd', 't', 'n', 'l', 'g', 'k', 'h',
+                   'j', 'q', 'x', 'zh', 'ch', 'sh', 'r', 'z', 'c', 's', 'y', 'w']
+
+        # 提取声调（最后一个数字）
+        tone = None
+        for char in reversed(pinyin):
+            if char.isdigit():
+                tone = int(char)
+                pinyin = pinyin.replace(char, '')
+                break
+
+        # 提取声母
+        initial = None
+        for i in initials:
+            if pinyin.startswith(i):
+                initial = i
+                pinyin = pinyin[len(i):]
+                break
+
+        # 剩下的部分是韵母
+        final = pinyin
+
+        return {'initial': initial, 'final': final, 'tone': tone}
+
+    # 分解拼音
+    p1 = parse_pinyin(pinyin1)
+    p2 = parse_pinyin(pinyin2)
+
+    # 计算各部分的相似性权重
+    weights = {'initial': 0.3, 'final': 0.5, 'tone': 0.2}
+    similarity = 0.0
+
+    # 声母相似度
+    if p1['initial'] == p2['initial']:
+        similarity += weights['initial']
+
+    # 韵母相似度 (可以进一步细化为韵头、韵腹、韵尾)
+    if p1['final'] == p2['final']:
+        similarity += weights['final']
+    else:
+        # 韵母有部分相同
+        common_len = 0
+        min_len = min(len(p1['final']), len(p2['final']))
+        for i in range(min_len):
+            if p1['final'][i] == p2['final'][i]:
+                common_len += 1
+
+        if min_len > 0:
+            similarity += weights['final'] * (common_len / min_len) * 0.8
+
+    # 声调相似度
+    if p1['tone'] == p2['tone']:
+        similarity += weights['tone']
+
+    return similarity
 
 def convert_speech_to_text(audio_path, domain=None, gpu_id=None):
     """
@@ -181,23 +257,117 @@ def convert_speech_to_text(audio_path, domain=None, gpu_id=None):
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-        # 通用多音字纠正处理
-        original_text, corrected_pinyin = correct_polyphone_errors(transcription[0], domain)
-
-        # 应用自定义词库改进转录结果
-        # 先使用通用词库(common)作为基础，然后应用领域词库(如果指定)
-        improved_text = custom_vocabulary.improve_transcription(original_text, domain, corrected_pinyin)
+        # 通用多音字纠正处理及领域词库匹配
+        original_text, corrected_text, pinyin_list = apply_domain_correction(transcription[0], domain)
 
         print(f"语音识别结果 (领域: {domain if domain else '通用'}):")
         print(f"原始识别: {original_text}")
-        print(f"改进结果: {improved_text}")
+        print(f"改进结果: {corrected_text}")
 
-        return improved_text
+        return corrected_text
 
     except Exception as e:
         print(f"语音转文字失败: {str(e)}")
         return f"语音转文字过程出错: {str(e)}"
 
+def apply_domain_correction(text, domain=None):
+    """
+    应用领域词汇修正和多音字纠正
+    
+    Args:
+        text: 原始识别文本
+        domain: 领域名称
+        
+    Returns:
+        tuple: (原始文本, 修正后的文本, 拼音列表)
+    """
+    if not text:
+        return text, text, []
+
+    try:
+        from pypinyin import lazy_pinyin, Style
+        has_pinyin = True
+    except ImportError:
+        has_pinyin = False
+        print("警告: 未安装pypinyin模块，无法进行拼音处理")
+        return text, text, []
+
+    if not has_pinyin:
+        return text, text, []
+
+    # 分词
+    words = list(jieba.cut(text))
+    print(f"分词结果: {words}")
+
+    # 获取拼音（含音调）
+    pinyin_list = lazy_pinyin(text, style=Style.TONE3)
+    print(f"原始拼音: {pinyin_list}")
+
+    # 记录原始文本
+    original_text = text
+    corrected_text = text
+
+    # 进行多音字纠正
+    corrected_text, pinyin_list = correct_polyphone_errors(corrected_text, domain)
+
+    # 如果指定了领域，应用领域词库进行纠正
+    if domain:
+
+        # 获取词库管理器
+        vocab_manager = get_vocabulary_manager()
+
+        # 记录要替换的词汇及其位置
+        replacements = []
+
+        # 获取领域词库中的所有术语
+        domain_terms = vocab_manager.get_all_terms(vocab_type="domain", domain_name=domain)
+
+        # 为每个分词结果计算与领域词汇的相似度
+        for i, word in enumerate(words):
+            if len(word) <= 1:  # 跳过单字词
+                continue
+
+            # 获取词的完整拼音
+            word_pinyin = ''.join(lazy_pinyin(word, style=Style.TONE3))
+
+            # 最佳匹配和相似度
+            best_match = None
+            max_similarity = 0.7  # 设置较高的阈值
+
+            # 与领域词库中的所有词比较
+            for term in domain_terms:
+                if abs(len(term) - len(word)) > 2:  # 长度差异过大的跳过
+                    continue
+
+                # 计算术语的拼音
+                term_pinyin = ''.join(lazy_pinyin(term, style=Style.TONE3))
+
+                # 计算拼音相似度
+                similarity = calculate_pinyin_similarity(word_pinyin, term_pinyin)
+                print(f"词 '{word}' 与术语 '{term}' 的拼音相似度: {similarity}")
+
+                # 找到更好的匹配
+                if similarity > max_similarity:
+                    max_similarity = similarity
+                    best_match = term
+
+            # 如果找到较好的匹配，记录下来
+            if best_match and best_match != word:
+                print(f"✓ 领域词汇修正: '{word}' -> '{best_match}'")
+                replacements.append((word, best_match))
+
+        # 应用替换
+        for old_word, new_word in replacements:
+            corrected_text = corrected_text.replace(old_word, new_word)
+
+        # 通过词库改进再次处理
+        improved_text = improve_transcription(corrected_text, domain, pinyin_list)
+        if improved_text != corrected_text:
+            corrected_text = improved_text
+
+    print(f"纠正后文本: {corrected_text}")
+
+    return original_text, corrected_text, pinyin_list
 
 def correct_polyphone_errors(text, domain=None):
     """
@@ -208,7 +378,7 @@ def correct_polyphone_errors(text, domain=None):
         domain: 领域名称，用于应用特定领域的规则
         
     Returns:
-        tuple: (原始文本, 处理后的拼音列表)
+        tuple: (处理后的文本, 处理后的拼音列表)
     """
     if not text:
         return text, []
@@ -347,13 +517,13 @@ def correct_polyphone_errors(text, domain=None):
                 else:
                     print(f"  未找到匹配词，保持多音字 '{char}' 当前拼音 '{current_pinyin}'")
 
-                print(f"处理后拼音: {pinyin_list}")
-                print("多音字处理完成")
-            else:
-                print("未检测到多音字")
+    # 重新构建文本
+    corrected_text = ''.join(words)
 
-    # 返回原始文本和处理后的拼音
-    return text, pinyin_list
+    print(f"多音字处理后拼音: {pinyin_list}")
+    print(f"多音字处理后文本: {corrected_text}")
+
+    return corrected_text, pinyin_list
 
 def preprocess_audio(audio_path):
     """
@@ -377,7 +547,7 @@ def preprocess_audio(audio_path):
 
         # 保存处理后的文件
         processed_path = os.path.join(os.path.dirname(audio_path),
-                                    f"processed_{os.path.basename(audio_path)}")
+                                     f"processed_{os.path.basename(audio_path)}")
         sf.write(processed_path, y, sr)
 
         return processed_path
@@ -385,6 +555,202 @@ def preprocess_audio(audio_path):
         print(f"音频预处理失败: {str(e)}")
         return audio_path  # 如果处理失败，返回原始文件路径
 
+# 用于改进转录结果的函数
+def improve_transcription(text, domain_name=None, pinyin=None):
+    """
+    使用自定义词库改进转录结果
+    
+    Args:
+        text: 原始转录文本
+        domain_name: 领域名称，用于应用特定领域的术语词库
+        pinyin: 处理后的拼音列表，用于辅助判断多音字
+        
+    Returns:
+        改进后的文本
+    """
+    if not text or not pinyin:
+        return text
+
+    # 获取词库管理器
+    vocab_manager = get_vocabulary_manager()
+
+    # 先用通用词库处理
+    # 获取通用词库的拼音和长度映射
+    common_pinyin_map = vocab_manager.get_domain_pinyin_map("common")
+    common_term_by_length = vocab_manager.get_domain_length_map("common")
+
+    print("使用通用词库和拼音辅助判断")
+    improved_text = _apply_vocabulary_with_pinyin(text, pinyin, common_pinyin_map, common_term_by_length)
+
+    # 如果指定了领域，再用领域词库处理
+    if domain_name and domain_name != "common":
+        # 获取领域词库的拼音和长度映射
+        domain_pinyin_map = vocab_manager.get_domain_pinyin_map(domain_name)
+        domain_term_by_length = vocab_manager.get_domain_length_map(domain_name)
+
+        print(f"使用领域'{domain_name}'词库和拼音辅助判断")
+        improved_text = _apply_vocabulary_with_pinyin(improved_text, pinyin, domain_pinyin_map, domain_term_by_length)
+
+    print(f"改进前: '{text}'")
+    print(f"改进后: '{improved_text}'")
+
+    return improved_text
+
+
+def _apply_vocabulary_with_pinyin(text, pinyin, term_pinyin_map,
+                                  term_by_length):
+    """
+    使用拼音辅助应用词库进行文本修正
+    
+    Args:
+        text: 需要修正的文本
+        pinyin: 拼音列表
+        term_pinyin_map: 拼音到术语的映射
+        term_by_length: 按长度分组的术语列表
+    
+    Returns:
+        修正后的文本
+    """
+    # 处理拼音列表
+    try:
+        # 将拼音列表转换为字符串形式，去除空格
+        text_pinyin = ''.join([p.replace(' ', '') for p in pinyin])
+        print(f"整个文本的拼音: {text_pinyin}")
+    except Exception as e:
+        print(f"处理拼音失败: {e}")
+        text_pinyin = ''.join(pinyin)
+        print(f"降级使用基本拼音: {text_pinyin}")
+
+    # 存储替换信息
+    replacements = []  # [(开始位置, 结束位置, 替换文本)]
+
+    # 优先考虑2-4字的组合，首先尝试匹配更长的词
+    prioritized_lengths = [4, 3, 2]  # 优先匹配的字长
+
+    # 按照优先级遍历可能的词长
+    for desired_len in prioritized_lengths:
+        # 确保词库中有该长度的词
+        if desired_len not in term_by_length:
+            continue
+
+        # 生成该长度可以匹配的拼音组合
+        desired_terms = term_by_length[desired_len]
+
+        # 根据文本长度判断可能的起始位置
+        for start_pos in range(len(text) - desired_len + 1):
+            end_pos = start_pos + desired_len
+
+            # 检查当前位置是否已经被其他替换覆盖
+            already_covered = False
+            for r_start, r_end, _ in replacements:
+                if (start_pos >= r_start and start_pos < r_end) or \
+                   (end_pos > r_start and end_pos <= r_end) or \
+                   (start_pos <= r_start and end_pos >= r_end):
+                    already_covered = True
+                    break
+
+            if already_covered:
+                continue
+
+            # 获取当前位置的文本片段
+            text_segment = text[start_pos:end_pos]
+
+            # 从传入的pinyin参数中获取对应的拼音片段
+            # 注意：pinyin列表的长度应该与text相同
+            segment_pinyin = pinyin[start_pos:end_pos]
+            segment_tone_pinyin = ''.join(
+                [p.replace(' ', '') for p in segment_pinyin])
+            print(
+                f"检查片段: '{text_segment}' (位置 {start_pos}-{end_pos}), 拼音: '{segment_tone_pinyin}'"
+            )
+
+            # 寻找最佳匹配
+            best_match = None
+            best_similarity = 0.7  # 设置较高的阈值确保精确匹配
+
+            # 遍历词库中指定长度的所有术语
+            for term, term_pinyin in desired_terms:
+                # 拼音完全匹配
+                if term_pinyin == segment_tone_pinyin:
+                    best_match = term
+                    best_similarity = 1.0
+                    break
+
+                # 计算拼音相似度
+                try:
+                    # 提取声调
+                    segment_tone = None
+                    term_tone = None
+
+                    for char in reversed(segment_tone_pinyin):
+                        if char.isdigit():
+                            segment_tone = int(char)
+                            break
+
+                    for char in reversed(term_pinyin):
+                        if char.isdigit():
+                            term_tone = int(char)
+                            break
+
+                    # 去除声调
+                    segment_no_tone = ''.join(
+                        [c for c in segment_tone_pinyin if not c.isdigit()])
+                    term_no_tone = ''.join(
+                        [c for c in term_pinyin if not c.isdigit()])
+
+                    # 基础相似度计算
+                    if segment_no_tone == term_no_tone:
+                        # 无声调拼音相同，基础相似度为0.9
+                        similarity = 0.9
+                        # 声调也相同，完全匹配
+                        if segment_tone == term_tone:
+                            similarity = 1.0
+                    else:
+                        # 计算字符匹配率
+                        matches = 0
+                        total = max(len(segment_no_tone), len(term_no_tone))
+                        for i in range(
+                                min(len(segment_no_tone), len(term_no_tone))):
+                            if segment_no_tone[i] == term_no_tone[i]:
+                                matches += 1
+
+                        # 基础相似度
+                        similarity = matches / total * 0.8  # 最多80%相似度
+
+                        # 声调相同加分
+                        if segment_tone == term_tone:
+                            similarity += 0.1  # 声调相同加10%相似度
+
+                    # 单字词特殊处理
+                    if desired_len == 1 and segment_no_tone == term_no_tone and segment_tone != term_tone:
+                        similarity *= 0.9  # 单字词声调不同，降低10%相似度
+                except Exception as e:
+                    print(f"计算相似度出错: {e}")
+                    similarity = 0.0
+
+                # 更新最佳匹配
+                if similarity > best_similarity:
+                    best_similarity = similarity
+                    best_match = term
+                    print(
+                        f"找到相似匹配: '{term}' (标准拼音: '{term_pinyin}', 相似度: {similarity:.2f})"
+                    )
+
+            # 如果找到匹配且与原文不同，则添加替换
+            if best_match and best_match != text_segment and best_similarity >= 0.7:
+                print(
+                    f"✓ 确认替换: '{text_segment}' -> '{best_match}' (位置 {start_pos}-{end_pos}, 相似度: {best_similarity:.2f})"
+                )
+                replacements.append((start_pos, end_pos, best_match))
+
+    # 应用替换（从后向前，避免位置变化）
+    replacements.sort(reverse=True)
+    result_text = list(text)
+
+    for start_pos, end_pos, replacement in replacements:
+        result_text[start_pos:end_pos] = replacement
+
+    return ''.join(result_text)
 
 def main():
     """
@@ -419,7 +785,7 @@ def main():
 
     # 列出术语
     elif args.action == "list_terms":
-        vocab_manager = custom_vocabulary.get_vocabulary_manager()
+        vocab_manager = get_vocabulary_manager()
         terms = vocab_manager.get_all_terms(args.vocab_type, args.domain)
 
         print(f"术语列表 (共{len(terms)}个):")
@@ -495,12 +861,12 @@ def test_polyphone_correction(text, domain=None):
     # 应用自定义词库改进转录结果
     try:
         # 先应用通用词库
-        common_improved = custom_vocabulary.improve_transcription(original_text, None, corrected_pinyin)
+        common_improved = improve_transcription(original_text, None, corrected_pinyin)
         print(f"通用词库改进: {common_improved}")
 
         # 如果指定了领域，再应用领域词库
         if domain:
-            domain_improved = custom_vocabulary.improve_transcription(common_improved, domain, corrected_pinyin)
+            domain_improved = improve_transcription(common_improved, domain, corrected_pinyin)
             print(f"领域'{domain}'词库再次改进: {domain_improved}")
             final_result = domain_improved
         else:
@@ -519,6 +885,13 @@ def test_polyphone_correction(text, domain=None):
 
 
 if __name__ == "__main__":
+    # 调用初始化词库
+    try:
+        init_vocabulary()
+    except Exception as e:
+        print(f"初始化词库失败: {e}")
+        print("程序将继续，但某些词库功能可能不可用")
+
     # 如果有命令行参数，执行主函数
     if len(sys.argv) > 1:
         main()
@@ -526,7 +899,7 @@ if __name__ == "__main__":
         # 否则执行简单测试
         print("执行测试...")
         # 测试多音字修正和词库应用
-        print(convert_speech_to_text("server-asr/voice_to_text/noice2.wav", "telecom"))
-        # test_polyphone_correction("尼号", None)  # 无领域，仅使用通用词库
+        # print(convert_speech_to_text("server-asr/voice_to_text/noice2.wav", "telecom"))
+        test_polyphone_correction("电型", "telecom")  # 无领域，仅使用通用词库
 
         # test_polyphone_correction("尼号，我想要进行果内长途花费查询", "telecom")  # 电信领域
